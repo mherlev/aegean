@@ -6,7 +6,7 @@
             <frequency Hz="80000000" />
             <pipeline dual="false" />
             <bus burstLength="4" writeCombine="false" />
-            <bootrom app="bootable-cmpmaster"/>
+            <bootrom app="bootable-hello_puts"/>
             <MCache size="8k" blocks="16" repl="" />
             <DCache size="4k" assoc="1" repl="" writeThrough="true" />
             <SCache size="4k" />
