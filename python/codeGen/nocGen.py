@@ -216,6 +216,11 @@ class NoCGen(object):
         argo_src.write(self.p.ARGO_PATH+'/src/ni/counter.vhd ')
         argo_src.write(self.p.ARGO_PATH+'/src/ni/dma.vhd ')
         argo_src.write(self.p.ARGO_PATH+'/src/mem/com_spm.vhd ')
+        argo_src.write(self.p.ARGO_PATH+'/src/cci/common/OCPInterface.vhd ')
+        argo_src.write(self.p.ARGO_PATH+'/src/cci/common/OCPIOClockCrossingInterface_types.vhd ')
+        argo_src.write(self.p.ARGO_PATH+'/src/cci/ocpio/cci_a.vhd ')
+        argo_src.write(self.p.ARGO_PATH+'/src/cci/ocpio/cci_b.vhd ')
+        argo_src.write(self.p.ARGO_PATH+'/src/cci/ocpio/cci.vhd ')
         argo_src.write(self.p.ARGO_PATH+'/src/ni/nAdapter.vhd ')
 
         if routerType == 'sync':
