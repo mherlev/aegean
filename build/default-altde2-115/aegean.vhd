@@ -6,6 +6,7 @@ use work.ocp.all;
 use work.noc_interface.all;
 use work.OCPInterface.all;
 use work.OCPIOCCI_types.all;
+use work.OCPBurstCCI_types.all;
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -160,6 +161,11 @@ architecture struct of aegean is
 		);
 	end component;
 
+	component OCPBurstCCI is
+		port(	input	: in	OCPBurstCCIIn_r;
+				output	: out	OCPBurstCCIOut_r
+		);
+	end component;
 
 	signal ocp_io_ms : ocp_io_m_a;
 	signal ocp_io_ss : ocp_io_s_a;
@@ -174,23 +180,27 @@ architecture struct of aegean is
 	constant SPM_WIDTH : size_array := (12, 12, 12, 12);
 
 
-	signal cci_input	: OCPIOCCIIn_r;
-	signal cci_output	: OCPIOCCIOut_r;
-	signal clk0			: std_logic;
+	signal cci_io_input	 : OCPIOCCIIn_r;
+	signal cci_io_output : OCPIOCCIOut_r;
+
+	signal cci_burst_input	: OCPBurstCCIIn_r;
+	signal cci_burst_output	: OCPBurstCCIOut_r;	
+	
+	signal clk0			 : std_logic;
 
 begin
-	clk0 <= not clk;
+	clk0 <= clk;
 	pat0 : patmosMasterPatmosCore port map(
 		clk	=>	clk0,
 		reset	=>	reset,
-		io_comConf_M_Cmd	=>	cci_input.ocpio_A.MCmd,
-		io_comConf_M_Addr	=>	cci_input.ocpio_A.MAddr,
-		io_comConf_M_Data	=>	cci_input.ocpio_A.MData,
-		io_comConf_M_ByteEn	=>	cci_input.ocpio_A.MByteEn,
-		io_comConf_M_RespAccept	=>	cci_input.ocpio_A.MRespAccept,
-		io_comConf_S_Resp	=>	cci_output.ocpio_A.SResp,
-		io_comConf_S_Data	=>	cci_output.ocpio_A.SData,
-		io_comConf_S_CmdAccept	=>	cci_output.ocpio_A.SCmdAccept,
+		io_comConf_M_Cmd	=>	cci_io_input.ocpio_A.MCmd,
+		io_comConf_M_Addr	=>	cci_io_input.ocpio_A.MAddr,
+		io_comConf_M_Data	=>	cci_io_input.ocpio_A.MData,
+		io_comConf_M_ByteEn	=>	cci_io_input.ocpio_A.MByteEn,
+		io_comConf_M_RespAccept	=>	cci_io_input.ocpio_A.MRespAccept,
+		io_comConf_S_Resp	=>	cci_io_output.ocpio_A.SResp,
+		io_comConf_S_Data	=>	cci_io_output.ocpio_A.SData,
+		io_comConf_S_CmdAccept	=>	cci_io_output.ocpio_A.SCmdAccept,
 		io_comSpm_M_Cmd	=>	ocp_core_ms(0).MCmd,
 		io_comSpm_M_Addr	=>	ocp_core_ms(0).MAddr,
 		io_comSpm_M_Data	=>	ocp_core_ms(0).MData,
@@ -336,18 +346,33 @@ begin
 		spm_s => spm_ss(0)
 	);
 
-	cdc : entity work.OCPIOCCI
+	cdc_io : entity work.OCPIOCCI
 	port map(
-		input => cci_input,
-		output => cci_output
+		input => cci_io_input,
+		output => cci_io_output
 	);
-	cci_input.clk_A <= clk0;
-	cci_input.rst_A <= reset;
-	cci_input.clk_B <= clk;
-	cci_input.rst_B <= reset;
-	--cci_input.ocpio_A <= cci_input.ocpio_A;
-	cci_input.ocpio_B <= ocp_io_ss(0);
-	ocp_io_ms(0) <= cci_output.ocpio_B;	
+	cci_io_input.clk_A <= clk0;
+	cci_io_input.rst_A <= reset;
+	cci_io_input.clk_B <= clk;
+	cci_io_input.rst_B <= reset;
+	--cci_io_input.ocpio_A <= cci_io_input.ocpio_A;
+	cci_io_input.ocpio_B <= ocp_io_ss(0);
+	ocp_io_ms(0) <= cci_io_output.ocpio_B;	
+
+
+	cdc_BURST : entity work.OCPBurstCCI
+	port map(
+		input => cci_burst_input,
+		output => cci_burst_output
+	);
+	cci_burst_input.clk_A <= clk0;
+	cci_burst_input.rst_A <= reset;
+	cci_burst_input.clk_B <= clk;
+	cci_burst_input.rst_B <= reset;
+	cci_burst_input.OCPB_slave <= ocp_burst_ss(0);
+	cci_burst_input.OCPB_master <= ocp_burst_ms(0);
+--	ocp_io_ms(0) <= cci_io_output.ocpio_B;	
+
 
 
 
