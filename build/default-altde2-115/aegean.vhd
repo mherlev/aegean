@@ -360,7 +360,7 @@ begin
 	ocp_io_ms(0) <= cci_io_output.ocpio_B;	
 
 
-	cdc_BURST : entity work.OCPBurstCCI
+	cdc_burst : entity work.OCPBurstCCI
 	port map(
 		input => cci_burst_input,
 		output => cci_burst_output
