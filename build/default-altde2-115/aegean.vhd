@@ -209,15 +209,24 @@ begin
 		io_comSpm_S_Data	=>	ocp_core_ss(0).SData,
 		io_cpuInfoPins_id	=>	std_logic_vector(to_unsigned(0,32)),
 		io_cpuInfoPins_cnt	=>	std_logic_vector(to_unsigned(4,32)),
-		io_memPort_M_Cmd	=>	ocp_burst_ms(0).MCmd,
-		io_memPort_M_Addr	=>	ocp_burst_ms(0).MAddr,
-		io_memPort_M_Data	=>	ocp_burst_ms(0).MData,
-		io_memPort_M_DataValid	=>	ocp_burst_ms(0).MDataValid,
-		io_memPort_M_DataByteEn	=>	ocp_burst_ms(0).MDataByteEn,
-		io_memPort_S_Resp	=>	ocp_burst_ss(0).SResp,
-		io_memPort_S_Data	=>	ocp_burst_ss(0).SData,
-		io_memPort_S_CmdAccept	=>	ocp_burst_ss(0).SCmdAccept,
-		io_memPort_S_DataAccept	=>	ocp_burst_ss(0).SDataAccept,
+	--	io_memPort_M_Cmd	=>	ocp_burst_ms(0).MCmd,
+	--	io_memPort_M_Addr	=>	ocp_burst_ms(0).MAddr,
+	--	io_memPort_M_Data	=>	ocp_burst_ms(0).MData,
+	--	io_memPort_M_DataValid	=>	ocp_burst_ms(0).MDataValid,
+	--	io_memPort_M_DataByteEn	=>	ocp_burst_ms(0).MDataByteEn,
+	--	io_memPort_S_Resp	=>	ocp_burst_ss(0).SResp,
+	--	io_memPort_S_Data	=>	ocp_burst_ss(0).SData,
+	--	io_memPort_S_CmdAccept	=>	ocp_burst_ss(0).SCmdAccept,
+	--	io_memPort_S_DataAccept	=>	ocp_burst_ss(0).SDataAccept,
+		io_memPort_M_Cmd	=>	cci_burst_input.OCPB_master.MCmd,
+		io_memPort_M_Addr	=>	cci_burst_input.OCPB_master.MAddr,
+		io_memPort_M_Data	=>	cci_burst_input.OCPB_master.MData,
+		io_memPort_M_DataValid	=>	cci_burst_input.OCPB_master.MDataValid,
+		io_memPort_M_DataByteEn	=>	cci_burst_input.OCPB_master.MDataByteEn,
+		io_memPort_S_Resp	=>	cci_burst_output.OCPB_A.SResp,
+		io_memPort_S_Data	=>	cci_burst_output.OCPB_A.SData,
+		io_memPort_S_CmdAccept	=>	cci_burst_output.OCPB_A.SCmdAccept,
+		io_memPort_S_DataAccept	=>	cci_burst_output.OCPB_A.SDataAccept,
 		io_ledsPins_led	=>	led0,
 		io_uartPins_tx	=>	txd0,
 		io_uartPins_rx	=>	rxd0	);
@@ -370,8 +379,8 @@ begin
 	cci_burst_input.clk_B <= clk;
 	cci_burst_input.rst_B <= reset;
 	cci_burst_input.OCPB_slave <= ocp_burst_ss(0);
-	cci_burst_input.OCPB_master <= ocp_burst_ms(0);
---	ocp_io_ms(0) <= cci_io_output.ocpio_B;	
+--	cci_burst_input.OCPB_master <= ocp_burst_ms(0);
+	ocp_burst_ms(0) <= cci_burst_output.OCPB_B;	
 
 
 
