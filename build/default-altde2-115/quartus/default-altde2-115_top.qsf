@@ -146,6 +146,10 @@ set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/c
 set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci_a.vhd
 set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci_b.vhd
 set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/common/OCPBurstClockCrossingInterface_types.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci_a.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci_b.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci.vhd
 set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/ni/nAdapter.vhd
 set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/routers/synchronous/xbar.vhd
 set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/routers/synchronous/hpu.vhd
