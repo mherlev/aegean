@@ -45,6 +45,13 @@ add wave -hexadecimal /aegean_testbench/top/cmp/pat0/iocomp/Uart/uartS_Data
 
 
 
+add wave -position insertpoint  \
+sim:/aegean_testbench/top/cmp/cdc_burst/input \
+sim:/aegean_testbench/top/cmp/cdc_burst/output \
+sim:/aegean_testbench/top/cmp/cdc_burst/async_A \
+sim:/aegean_testbench/top/cmp/cdc_burst/async_B
+
+
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {509818 ps} 0}
 configure wave -namecolwidth 380
