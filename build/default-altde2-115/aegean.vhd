@@ -14,8 +14,10 @@ use ieee.numeric_std.all;
 
 entity aegean is
 	port(
-		clk	: in std_logic;
-		reset	: in std_logic;
+		clk0	: in std_logic;
+		clk1	: in std_logic;
+		reset0	: in std_logic;
+		reset1	: in std_logic;
 		sram_burst_m	: out ocp_burst_m;
 		sram_burst_s	: in ocp_burst_s;
 		led	: out std_logic_vector(8 downto 0);
@@ -186,13 +188,13 @@ architecture struct of aegean is
 	signal cci_burst_input	: OCPBurstCCIIn_r;
 	signal cci_burst_output	: OCPBurstCCIOut_r;	
 	
-	signal clk0			 : std_logic;
+	--signal clk0			 : std_logic;
 
 begin
-	clk0 <= clk;
+--	clk0 <= clk;
 	pat0 : patmosMasterPatmosCore port map(
-		clk	=>	clk0,
-		reset	=>	reset,
+		clk	=>	clk1,
+		reset	=>	reset1,
 		io_comConf_M_Cmd	=>	cci_io_input.ocpio_A.MCmd,
 		io_comConf_M_Addr	=>	cci_io_input.ocpio_A.MAddr,
 		io_comConf_M_Data	=>	cci_io_input.ocpio_A.MData,
@@ -232,8 +234,8 @@ begin
 		io_uartPins_rx	=>	rxd0	);
 
 	pat1 : patmosSlavePatmosCore port map(
-		clk	=>	clk,
-		reset	=>	reset,
+		clk	=>	clk0,
+		reset	=>	reset0,
 		io_comConf_M_Cmd	=>	ocp_io_ms(1).MCmd,
 		io_comConf_M_Addr	=>	ocp_io_ms(1).MAddr,
 		io_comConf_M_Data	=>	ocp_io_ms(1).MData,
@@ -262,8 +264,8 @@ begin
 		io_ledsPins_led	=>	led1	);
 
 	pat2 : patmosSlavePatmosCore port map(
-		clk	=>	clk,
-		reset	=>	reset,
+		clk	=>	clk0,
+		reset	=>	reset0,
 		io_comConf_M_Cmd	=>	ocp_io_ms(2).MCmd,
 		io_comConf_M_Addr	=>	ocp_io_ms(2).MAddr,
 		io_comConf_M_Data	=>	ocp_io_ms(2).MData,
@@ -292,8 +294,8 @@ begin
 		io_ledsPins_led	=>	led2	);
 
 	pat3 : patmosSlavePatmosCore port map(
-		clk	=>	clk,
-		reset	=>	reset,
+		clk	=>	clk0,
+		reset	=>	reset0,
 		io_comConf_M_Cmd	=>	ocp_io_ms(3).MCmd,
 		io_comConf_M_Addr	=>	ocp_io_ms(3).MAddr,
 		io_comConf_M_Data	=>	ocp_io_ms(3).MData,
@@ -329,9 +331,9 @@ begin
             SPM_IDX_SIZE => SPM_WIDTH(i)
             )
         port map(
-            p_clk => clk,
-            n_clk => clk,
-            reset => reset,
+            p_clk => clk0,
+            n_clk => clk0,
+            reset => reset0,
             ocp_core_m => ocp_core_ms(i),
             ocp_core_s => ocp_core_ss(i),
             spm_m => spm_ms(i),
@@ -346,9 +348,9 @@ begin
 		SPM_IDX_SIZE => SPM_WIDTH(0)
 	)
     port map(
-		p_clk => clk0,
-		n_clk => clk,
-		reset => reset,
+		p_clk => clk1,
+		n_clk => clk0,
+		reset => reset1,
 		ocp_core_m => ocp_core_ms(0),
 		ocp_core_s => ocp_core_ss(0),
 		spm_m => spm_ms(0),
@@ -360,10 +362,10 @@ begin
 		input => cci_io_input,
 		output => cci_io_output
 	);
-	cci_io_input.clk_A <= clk0;
-	cci_io_input.rst_A <= reset;
-	cci_io_input.clk_B <= clk;
-	cci_io_input.rst_B <= reset;
+	cci_io_input.clk_A <= clk1;
+	cci_io_input.rst_A <= reset1;
+	cci_io_input.clk_B <= clk0;
+	cci_io_input.rst_B <= reset0;
 	--cci_io_input.ocpio_A <= cci_io_input.ocpio_A;
 	cci_io_input.ocpio_B <= ocp_io_ss(0);
 	ocp_io_ms(0) <= cci_io_output.ocpio_B;	
@@ -374,10 +376,10 @@ begin
 		input => cci_burst_input,
 		output => cci_burst_output
 	);
-	cci_burst_input.clk_A <= clk0;
-	cci_burst_input.rst_A <= reset;
-	cci_burst_input.clk_B <= clk;
-	cci_burst_input.rst_B <= reset;
+	cci_burst_input.clk_A <= clk1;
+	cci_burst_input.rst_A <= reset1;
+	cci_burst_input.clk_B <= clk0;
+	cci_burst_input.rst_B <= reset0;
 	cci_burst_input.OCPB_slave <= ocp_burst_ss(0);
 --	cci_burst_input.OCPB_master <= ocp_burst_ms(0);
 	ocp_burst_ms(0) <= cci_burst_output.OCPB_B;	
@@ -386,16 +388,16 @@ begin
 
 
 	noc : entity work.noc port map(
-		clk	=>	clk,
-		reset	=>	reset,
+		clk	=>	clk0,
+		reset	=>	reset0,
 		ocp_io_ms	=>	ocp_io_ms,
 		ocp_io_ss	=>	ocp_io_ss,
 		spm_ports_m	=>	spm_ms,
 		spm_ports_s	=>	spm_ss	);
 
 	arbit : TdmArbiterWrapper port map(
-		clk	=>	clk,
-		reset	=>	reset,
+		clk	=>	clk0,
+		reset	=>	reset0,
 		io_slave_M_Cmd	=>	sram_burst_m.MCmd,
 		io_slave_M_Addr	=>	sram_burst_m.MAddr,
 		io_slave_M_Data	=>	sram_burst_m.MData,

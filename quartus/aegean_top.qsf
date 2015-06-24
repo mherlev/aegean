@@ -66,6 +66,7 @@ set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS_NO_OUTPUT_GND "AS INPUT TRI-STATED"
 
 set_instance_assignment -name FAST_INPUT_REGISTER ON -to SRAM_DQ*
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to oSRAM_A*
 set_instance_assignment -name FAST_OUTPUT_ENABLE_REGISTER ON -to *io_sramPins_ram_out_dout_ena
 
 
