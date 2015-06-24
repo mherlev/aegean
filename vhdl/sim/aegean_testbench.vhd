@@ -11,7 +11,8 @@ entity aegean_testbench is
 end entity ; -- aegean_testbench
 
 architecture arch of aegean_testbench is
-    signal clk : std_logic;
+    signal clk0 : std_logic;
+	signal clk1	: std_logic;
     signal reset : std_logic;
     signal led : std_logic_vector(8 downto 0);
 
@@ -41,12 +42,13 @@ architecture arch of aegean_testbench is
 
     file OUTPUT: TEXT open WRITE_MODE is "STD_OUTPUT";
 
-    constant PERIOD : time := 10 ns;
+    constant PERIOD0	: time := 10 ns;
     constant RESET_TIME : time := 40 ns;
-
+	constant PERIOD1	: time := 20 ns;
 begin
     aegean : entity work.aegean port map (
-        clk => clk,
+        clk0 => clk0,
+		clk1 => clk1,
         reset => reset,
         led => led,
         txd => open,
@@ -68,7 +70,8 @@ begin
         io_sramPins_ram_in_din       => io_sramPins_ram_in_din
         );
 
-    clock_gen(clk,PERIOD);
+    clock_gen(clk0,PERIOD0);
+	clock_gen(clk1,PERIOD1);
     reset_gen(reset,RESET_TIME);
 
     core0_uart_spy : process
@@ -151,17 +154,17 @@ begin
         signal_force("/aegean_testbench/aegean/pat2/iocomp/uart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
         signal_force("/aegean_testbench/aegean/pat3/iocomp/uart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
         loop
-            wait until rising_edge(clk);
+            wait until rising_edge(clk0);
             signal_force("/aegean_testbench/aegean/pat0/iocomp/uart/tx_baud_tick", "1", 0 ns, freeze, open, 0);
             signal_force("/aegean_testbench/aegean/pat1/iocomp/uart/tx_baud_tick", "1", 0 ns, freeze, open, 0);
             signal_force("/aegean_testbench/aegean/pat2/iocomp/uart/tx_baud_tick", "1", 0 ns, freeze, open, 0);
             signal_force("/aegean_testbench/aegean/pat3/iocomp/uart/tx_baud_tick", "1", 0 ns, freeze, open, 0);
-            wait until rising_edge(clk);
+            wait until rising_edge(clk0);
             signal_force("/aegean_testbench/aegean/pat0/iocomp/uart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
             signal_force("/aegean_testbench/aegean/pat1/iocomp/uart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
             signal_force("/aegean_testbench/aegean/pat2/iocomp/uart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
             signal_force("/aegean_testbench/aegean/pat3/iocomp/uart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
-            wait for 3*PERIOD;
+            wait for 3*PERIOD0;
         end loop;
     end process ; -- baud_inc
 
