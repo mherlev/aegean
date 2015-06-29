@@ -28,7 +28,8 @@ entity aegean_top is
 		oLed5Pins_led	: out std_logic;
 		oLed6Pins_led	: out std_logic;
 		oLed7Pins_led	: out std_logic;
-		oLed8Pins_led	: out std_logic
+		oLed8Pins_led	: out std_logic;
+		count	: out std_logic_Vector(15 downto 0)
 	);
 
 end entity;
@@ -83,7 +84,7 @@ architecture struct of aegean_top is
 	);
 
 	end component;
-
+	signal int_count : std_logic_vector(15 downto 0);
 begin
 
     --
@@ -168,7 +169,8 @@ begin
 		led0	=>	oLed0Pins_led,
 		led1	=>	oLed1Pins_led,
 		led2	=>	oLed2Pins_led,
-		led3	=>	oLed3Pins_led	);
+		led3	=>	oLed3Pins_led,
+		count => int_count	);
 
 	ssram : SRamCtrl port map(
 		clk	=>	clk_int0,
@@ -192,4 +194,6 @@ begin
 		io_sRamCtrlPins_ramOut_nlb	=>	oSRAM_LB_N,
 		io_sRamCtrlPins_ramOut_nub	=>	oSRAM_UB_N	);
 
+		count <= (others => '0');
+		
 end struct;

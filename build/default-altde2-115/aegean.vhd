@@ -26,7 +26,8 @@ entity aegean is
 		led0	: out std_logic;
 		led1	: out std_logic;
 		led2	: out std_logic;
-		led3	: out std_logic
+		led3	: out std_logic;
+		count	: out std_logic_vector(15 downto 0)
 	);
 
 end entity;
@@ -165,7 +166,8 @@ architecture struct of aegean is
 
 	component OCPBurstCCI is
 		port(	input	: in	OCPBurstCCIIn_r;
-				output	: out	OCPBurstCCIOut_r
+				output	: out	OCPBurstCCIOut_r;
+				count	: out	std_logic_vector(15 downto 0)
 		);
 	end component;
 
@@ -374,7 +376,8 @@ begin
 	cdc_burst : entity work.OCPBurstCCI
 	port map(
 		input => cci_burst_input,
-		output => cci_burst_output
+		output => cci_burst_output,
+		count => count
 	);
 	cci_burst_input.clk_A <= clk1;
 	cci_burst_input.rst_A <= reset1;
