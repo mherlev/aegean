@@ -194,6 +194,6 @@ begin
 		io_sRamCtrlPins_ramOut_nlb	=>	oSRAM_LB_N,
 		io_sRamCtrlPins_ramOut_nub	=>	oSRAM_UB_N	);
 
-		count <= (others => '0');
-		
+--		count <= (others => '0');
+		count <= int_count;
 end struct;
