@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE EP4CE115F29C7
 set_global_assignment -name TOP_LEVEL_ENTITY aegean_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:45:37  OCTOBER 01, 2013"
-set_global_assignment -name LAST_QUARTUS_VERSION 15.0.0
+set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -60,8 +60,7 @@ set_global_assignment -name INFER_RAMS_FROM_RAW_LOGIC OFF
 set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
 set_global_assignment -name VERILOG_MACRO "SYNTHESIS=<None>"
 
-set_location_assignment PIN_AH14 -to clk0
-set_location_assignment PIN_AG14 -to clk1
+set_location_assignment PIN_Y2 -to clk
 set_location_assignment PIN_T8 -to oSRAM_A[19]
 set_location_assignment PIN_AB8 -to oSRAM_A[18]
 set_location_assignment PIN_AB9 -to oSRAM_A[17]
@@ -120,16 +119,10 @@ set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS_NO_OUTPUT_GND "AS INPUT TRI-STATED"
 
 set_instance_assignment -name FAST_INPUT_REGISTER ON -to SRAM_DQ*
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to oSRAM_A*
 set_instance_assignment -name FAST_OUTPUT_ENABLE_REGISTER ON -to *io_sramPins_ram_out_dout_ena
 
 
-
-
-set_global_assignment -name SYNCHRONIZER_IDENTIFICATION "FORCED IF ASYNCHRONOUS"
-set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
-
-set_global_assignment -name SDC_FILE "default-altde2-115_top.sdc"
-set_global_assignment -name SDC_FILE "default-altde2-115_top.out.sdc"
 set_global_assignment -name VHDL_FILE ../config.vhd
 set_global_assignment -name VHDL_FILE ../top.vhd
 set_global_assignment -name VHDL_FILE ../aegean.vhd
@@ -138,50 +131,31 @@ set_global_assignment -name VERILOG_FILE ../patmosMasterPatmosCore.v
 set_global_assignment -name VERILOG_FILE ../patmosSlavePatmosCore.v
 set_global_assignment -name VERILOG_FILE ../SRamCtrl.v
 set_global_assignment -name VERILOG_FILE ../TdmArbiterWrapper.v
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/config_types.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/build/default-altde2-115/ocp_config.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/ocp/ocp.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/util/math_util.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/noc_defs.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/noc_interface.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/mem/bram.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/mem/bram_tdp.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/ni/counter.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/ni/dma.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/mem/com_spm.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/common/OCPInterface.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/common/OCPIOClockCrossingInterface_types.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci_a.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci_b.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/common/metastability_detector.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/common/OCPBurstClockCrossingInterface_types.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci_a.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci_b.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/ni/nAdapter.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/routers/synchronous/xbar.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/routers/synchronous/hpu.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/routers/synchronous/router.vhd"
-set_global_assignment -name VHDL_FILE "/home/mathias/t-crest/aegean/../argo/src/noc/synchronous/noc_node.vhd"
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/config_types.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/build/default-altde2-115/ocp_config.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/ocp/ocp.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/util/math_util.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/noc_defs.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/noc_interface.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/mem/bram.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/mem/bram_tdp.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/ni/counter.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/ni/dma.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/mem/com_spm.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/common/OCPInterface.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/common/OCPIOClockCrossingInterface_types.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci_a.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci_b.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpio/cci.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/common/OCPBurstClockCrossingInterface_types.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci_a.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci_b.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/cci/ocpburst/ocpburst_cci.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/ni/nAdapter.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/routers/synchronous/xbar.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/routers/synchronous/hpu.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/routers/synchronous/router.vhd
+set_global_assignment -name VHDL_FILE /home/mathias/t-crest/aegean/../argo/src/noc/synchronous/noc_node.vhd
+
 set_global_assignment -name VHDL_FILE ../../../vhdl/altera/cyc2_pll.vhd
-
-
-set_location_assignment PIN_G19 -to count[0]
-set_location_assignment PIN_F19 -to count[1]
-set_location_assignment PIN_E19 -to count[2]
-set_location_assignment PIN_F21 -to count[3]
-set_location_assignment PIN_F18 -to count[4]
-set_location_assignment PIN_E18 -to count[5]
-set_location_assignment PIN_J19 -to count[6]
-set_location_assignment PIN_H19 -to count[7]
-set_location_assignment PIN_J17 -to count[8]
-set_location_assignment PIN_G17 -to count[9]
-set_location_assignment PIN_J15 -to count[10]
-set_location_assignment PIN_H16 -to count[11]
-set_location_assignment PIN_J16 -to count[12]
-set_location_assignment PIN_H17 -to count[13]
-set_location_assignment PIN_F15 -to count[14]
-set_location_assignment PIN_G15 -to count[15]
-
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

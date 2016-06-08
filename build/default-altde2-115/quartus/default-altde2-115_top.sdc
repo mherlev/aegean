@@ -4,9 +4,7 @@
  
  
 # Clock in input pin (50 MHz)
-#create_clock -period 20 [get_ports clk]
-create_clock -period 20 [get_ports clk0]
-create_clock -period 20 [get_ports clk1]
+create_clock -period 20 [get_ports clk]
 
 derive_clock_uncertainty
 # Create generated clocks based on PLLs

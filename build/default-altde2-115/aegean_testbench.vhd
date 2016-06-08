@@ -1,17 +1,17 @@
 
-library std;
-use std.textio.all;
-
-library modelsim_lib;
-use modelsim_lib.util.all;
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library std;
+use std.textio.all;
+
 library work;
 use work.test.all;
 use work.ocp.all;
+
+library modelsim_lib;
+use modelsim_lib.util.all;
 
 entity aegean_testbench is
 
@@ -20,11 +20,9 @@ end entity;
 architecture struct of aegean_testbench is
 	signal pat0_uart_tx_reg : std_logic_vector(7 downto 0);
 	signal pat0_uart_tx_status_reg : std_logic;
-	signal clk0 : std_logic;
-	signal clk1	: std_logic;
-	constant PERIOD_0	: time := 12.5 ns;
-	constant RESET_TIME	: time := 40 ns;
-	constant PERIOD_1	: time := 25 ns;
+	signal clk : std_logic;
+	constant PERIOD : time := 12.5 ns;
+	constant RESET_TIME : time := 40 ns;
 	signal oSRAM_A : std_logic_vector(19 downto 0);
 	signal oSRAM_OE_N : std_logic;
 	signal oSRAM_WE_N : std_logic;
@@ -39,11 +37,10 @@ architecture struct of aegean_testbench is
 begin
 
 
-    clock_gen(clk0,PERIOD_0);
-	clock_gen(clk1,PERIOD_1);
+    clock_gen(clk,PERIOD);
+
 	top : entity work.aegean_top port map(
-		clk0	=>	clk0,
-		clk1	=>	clk1,
+		clk	=>	clk,
 		oSRAM_A	=>	oSRAM_A,
 		oSRAM_OE_N	=>	oSRAM_OE_N,
 		oSRAM_WE_N	=>	oSRAM_WE_N,
@@ -93,11 +90,11 @@ begin
     baud_inc : process
     begin
         loop
-            wait until rising_edge(clk0);
+            wait until rising_edge(clk);
             signal_force("/aegean_testbench/top/cmp/pat0/iocomp/patmosMasterUart/tx_baud_tick", "1", 0 ns, freeze, open, 0);
-            wait until rising_edge(clk0);
+            wait until rising_edge(clk);
             signal_force("/aegean_testbench/top/cmp/pat0/iocomp/patmosMasterUart/tx_baud_tick", "0", 0 ns, freeze, open, 0);
-            wait for 3*PERIOD_0;
+            wait for 3*PERIOD;
         end loop;
     end process ; -- baud_inc
 

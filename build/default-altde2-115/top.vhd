@@ -1,16 +1,15 @@
 
-library work;
-use work.config.all;
-use work.ocp.all;
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library work;
+use work.config.all;
+use work.ocp.all;
+
 entity aegean_top is
 	port(
-		clk0	: in std_logic;
-		clk1	: in std_logic;
+		clk	: in std_logic;
 		oSRAM_A	: out std_logic_vector(19 downto 0);
 		oSRAM_OE_N	: out std_logic;
 		oSRAM_WE_N	: out std_logic;
@@ -28,24 +27,16 @@ entity aegean_top is
 		oLed5Pins_led	: out std_logic;
 		oLed6Pins_led	: out std_logic;
 		oLed7Pins_led	: out std_logic;
-		oLed8Pins_led	: out std_logic;
-		count	: out std_logic_Vector(15 downto 0)
+		oLed8Pins_led	: out std_logic
 	);
 
 end entity;
 
 architecture struct of aegean_top is
-	constant pll_mult	: natural := 8;
-	constant pll_div	: natural := 10;
-	constant pll_mult2	: natural := 8;
-	constant pll_div2	: natural := 5;
-	signal clk_int0 : std_logic;
-	signal clk_int1 : std_logic;
-	signal int_res	: std_logic;
-	signal int_res0	: std_logic := '0';
-	signal int_res1	: std_logic := '0';
-	signal res0_reg1,res0_reg2 : std_logic := '0';
-	signal res1_reg1,res1_reg2 : std_logic := '0';
+	constant pll_mult : natural := 8;
+	constant pll_div : natural := 5;
+	signal clk_int : std_logic;
+	signal int_res : std_logic;
 	signal res_reg1,res_reg2 : std_logic;
 	signal res_cnt : unsigned(2 downto 0) := "000";
 	signal sram_burst_m : ocp_burst_m;
@@ -61,7 +52,6 @@ architecture struct of aegean_top is
 	component SRamCtrl is
 	port(
 		clk	: in std_logic;
---		clk1	: in std_logic;
 		reset	: in std_logic;
 		io_ocp_M_Cmd	: in std_logic_vector(2 downto 0);
 		io_ocp_M_Addr	: in std_logic_vector(20 downto 0);
@@ -84,16 +74,16 @@ architecture struct of aegean_top is
 	);
 
 	end component;
-	signal int_count : std_logic_vector(15 downto 0);
+
 begin
 
     --
     --  internal reset generation
     --  should include the PLL lock signal
     --
-    process(clk_int0)
+    process(clk_int)
     begin
-        if rising_edge(clk_int0) then
+        if rising_edge(clk_int) then
             if (res_cnt /= "111") then
                 res_cnt <= res_cnt + 1;
             end if;
@@ -102,27 +92,6 @@ begin
             int_res  <= res_reg2;
         end if;
     end process;
-
-	process(clk_int0)
-	begin
-		if rising_edge(clk_int0) then
-			res0_reg1	<= int_res;
-			res0_reg2	<= res0_reg1;
-			int_res0	<= res0_reg2;
-		end if;
-	end process;
-
-	process(clk_int1)
-	begin
-		if rising_edge(clk_int1) then
-			res1_reg1	<= int_res;
-			res1_reg2	<= res1_reg1;
-			int_res1	<= res1_reg2;
-		end if;
-	end process;
-
-
-
 
     SRAM_in_din <= SRAM_DQ;
 
@@ -141,26 +110,14 @@ begin
             divide_by   => pll_div
         )
         port map(
-            inclk0 => clk0,
-            c0     => clk_int0,
+            inclk0 => clk,
+            c0     => clk_int,
             c1     => open
         );
-	pll_inst_2 : entity work.pll generic map(
-            multiply_by => pll_mult2,
-            divide_by   => pll_div2
-        )
-        port map(
-            inclk0 => clk1,
-            c0     => clk_int1,
-            c1     => open
-        );
-
 
 	cmp : entity work.aegean port map(
-		clk0	=>	clk_int0,
-		clk1	=>	clk_int1,
-		reset0	=>	int_res0,
-		reset1	=>	int_res1,
+		clk	=>	clk_int,
+		reset	=>	int_res,
 		sram_burst_m	=>	sram_burst_m,
 		sram_burst_s	=>	sram_burst_s,
 		led	=>	open,
@@ -169,12 +126,11 @@ begin
 		led0	=>	oLed0Pins_led,
 		led1	=>	oLed1Pins_led,
 		led2	=>	oLed2Pins_led,
-		led3	=>	oLed3Pins_led,
-		count => int_count	);
+		led3	=>	oLed3Pins_led	);
 
 	ssram : SRamCtrl port map(
-		clk	=>	clk_int0,
-		reset	=>	int_res0,
+		clk	=>	clk_int,
+		reset	=>	int_res,
 		io_ocp_M_Cmd	=>	sram_burst_m.MCmd,
 		io_ocp_M_Addr	=>	sram_burst_m.MAddr,
 		io_ocp_M_Data	=>	sram_burst_m.MData,
@@ -194,6 +150,4 @@ begin
 		io_sRamCtrlPins_ramOut_nlb	=>	oSRAM_LB_N,
 		io_sRamCtrlPins_ramOut_nub	=>	oSRAM_UB_N	);
 
---		count <= (others => '0');
-		count <= int_count;
 end struct;
